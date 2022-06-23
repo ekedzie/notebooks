@@ -12,9 +12,8 @@ def read_data(filename):
     header = pd.read_csv(filename, sep ='\t', nrows=1, encoding='latin1')
     
     #extract number of lines to skip
-    word = str(header).split()    #turn first line into string then break up into a string array
+    word = str(header).split() #turn first line into string then break up into a string array
     num = int(word[8])       #find the last number in the string and convert to integer
-
     #read the data chunk of the file by skipping the header-1 lines
     df = pd.read_csv(filename, sep ='\t', skiprows=num-1, encoding='latin1')    
     return df
@@ -51,6 +50,8 @@ def plot_press(pfile):
     
 def getnearpos(array,value):
     idx = np.argmin((np.abs(array-value)).values)
+    #print ('The ' + str(idx) +'th value of this array is: ' + str(array[idx]))
+    
     return idx
 
 def folder_files(folder_dir):
@@ -68,10 +69,11 @@ def folder_files(folder_dir):
     ls=[]
     for i in range(len(mpts)):
         ls.append(read_data(mpts[i]))
+        
 
     #normalize all the dataframes by time zero in first dataframe
-    for i in range(len(ls)):
-        ls[i]['time/s']= ls[i]['time/s']-ls[0]['time/s'].iloc[0]
+#     for i in range(len(ls)):
+#         ls[i]['time/s']= ls[i]['time/s']-ls[0]['time/s'].iloc[0]
     
     return(ls)
 
@@ -89,9 +91,9 @@ def headspace(num_ch):
         elif ch==5:
             channel_vol=1671.8
         elif ch=='dems1':
-            channel_vol=1284 +499
+            channel_vol= 1284 # +499
         elif ch== 'dems2':
-            channel_vol=1292+499
+            channel_vol=1292 # +499
         return (channel_vol)
     
     cell_vol = 422.5
@@ -100,3 +102,11 @@ def headspace(num_ch):
     
     return headspace
 
+def read_dems(file):
+    df = pd.read_csv(file, sep ='\t')
+    df = df.rename(columns=lambda x: x.replace('.00000', ''))
+    df.rename(columns={'0':'time/min', '0.1':'temperature/C', '0.2': 'pressure/torr', '0.3':'current/mA', '0.4':'voltage/V'}, inplace= True)
+    #normalize time function
+    df['time/min'] = df['time/min']-df['time/min'].iloc[0]
+    
+    return df
