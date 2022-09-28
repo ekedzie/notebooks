@@ -78,23 +78,37 @@ def folder_files(folder_dir):
     return(ls)
 
 
-def headspace(num_ch):
-    def channel_vol(ch):
+def headspace(num_ch): #, filedate):
+    def channel_vol(ch): #, filedate):
         if ch==1:
-            channel_vol=1656.5
+#             chan1 = [1656.5,1691.5]
+#             if filename < 190211:
+#                 channel_vol=chan1[0]
+#             else:
+#                 channel_vol=chan1[1]
+            channel_vol=1691.5
         elif ch==2:
             channel_vol=1676.5
         elif ch==3:
-            channel_vol=1669.4
+             channel_vol = 1669.4
         elif ch==4:
             channel_vol=1640.6
+            channel_vol=1671 # as of 6/2022
+
+
         elif ch==5:
             channel_vol=1671.8
         elif ch=='dems1':
             channel_vol= 1284 # +499
         elif ch== 'dems2':
             channel_vol=1292 # +499
+        
+        
+        
         return (channel_vol)
+    
+    
+    
     
     cell_vol = 422.5
     elyte = 80 
